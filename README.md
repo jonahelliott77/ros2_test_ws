@@ -1,1 +1,1 @@
-hi
+This repo is for the purposes of familiarizing myself with C++ and writing ROS2 nodes. Currently, I am taking scan data from a LiDAR sensor and publishing the LaserScan and PointCloud2 topics, which I will then scan in with a node that subscribes to these topics so that I can experiment with it.
