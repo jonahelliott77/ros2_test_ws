@@ -1,7 +1,6 @@
 #include <chrono>
 #include <memory>
 #include <string>
-#include <bits/stdc++.h>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -20,9 +19,9 @@ class Gs5Node : public rclcpp::Node
     {
       scan_in_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
         "laser_scan", 10,
-      std::bind(&Gs5Node::scan_to_string(), this, std::placeholders::_1));
+      std::bind(&Gs5Node::scan_to_string, this, std::placeholders::_1));
 
-      publisher_ = this->create_publisher<sensor_msgs::msg::String>(output_topic_, 10);
+      publisher_ = this->create_publisher<std_msgs::msg::String>(output_topic_, 10);
       
         auto topic_callback =
         [this](const sensor_msgs::msg::LaserScan & msg) -> void {
