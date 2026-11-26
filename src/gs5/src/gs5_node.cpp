@@ -20,18 +20,19 @@ class Gs5Node : public rclcpp::Node
       scan_in_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
         "laser_scan", 10,
       std::bind(&Gs5Node::scan_to_string, this, std::placeholders::_1));
-
-      publisher_ = this->create_publisher<std_msgs::msg::String>(output_topic_, 10);
+      publisher_ = this->create_publisher<std_msgs::msg::String>(
+        output_topic_, 10,
+      std::bind(&Gs5Node::publish_topic));
       
-        auto topic_callback =
-        [this](const sensor_msgs::msg::LaserScan & msg) -> void {
+      //   auto topic_callback =
+      //   [this](const sensor_msgs::msg::LaserScan & msg) -> void {
 
-          RCLCPP_INFO(this->get_logger(), "I Heard: '%s'", msg.data.c_str());
+      //     RCLCPP_INFO(this->get_logger(), "I Heard: '%s'", msg.data.c_str());
 
-          auto out = std_msgs::msg::String();
-          out.data = "Relayed: " + msg.data; 
-          this->publisher_->publish(out);
-        };
+      //     auto out = std_msgs::msg::String();
+      //     out.data = "Relayed: " + msg.data; 
+      //     this->publisher_->publish(out);
+      //   };
     }
   private:
     const std::string output_topic_ = "output_topic";
@@ -48,6 +49,12 @@ class Gs5Node : public rclcpp::Node
       range_max_ = msg.range_max;
 
       std::string string_out = std::to_string(range_min_) + ", " + (std::to_string(range_max_)) + "\n";
+    }
+
+    void publish_topic (const std::string msg) {
+      auto out = std_msgs::msg::String();
+      out.data = "Relayed: " + msg;
+      this->publisher_->publish(out);
     }
 };
 
